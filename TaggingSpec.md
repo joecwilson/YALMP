@@ -5,6 +5,7 @@ stored in JSON files. The default tag location starts in ```$HOME/Music/.YALMP/t
 tags should have the same layout as tha music itself.
 
 ## Single Disc Album Spec
+These will be titled as ```album.json```
 
 * AlbumName: str
 * AlbumArtist: str
@@ -38,6 +39,8 @@ tags should have the same layout as tha music itself.
 
 ## Disc Spec
 
+These will be titled as ```disc{discnumber}.json```
+
 * Album: str
   * Path to the json of the albums
 * Tracks: List[str]
@@ -51,7 +54,7 @@ tags should have the same layout as tha music itself.
 
 ## Track Spec
 
-* Name: str
+* Title: str
 * Album: str
   * Path back to the album
 * Disc: str
@@ -59,7 +62,8 @@ tags should have the same layout as tha music itself.
 
 ### Optional Track Sections
 
-* Artist: str
+* Artist: List[str]
+  * If not present will assume album artist is artist
 * Composer: str
 * Rating: Number
   * 1 - 10
