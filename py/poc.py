@@ -68,6 +68,8 @@ def add_disc_to_db(con, disc, album_id, disc_num ):
 def add_album_to_db(con, album): 
     os.chdir(album)
     album_json = {}
+    if not os.path.exists("album.json"):
+        return
     with open("album.json") as f:
         album_json = json.load(f)
     cur = con.cursor()
@@ -83,17 +85,26 @@ def add_album_to_db(con, album):
         add_disc_to_db(con, disc, album_id, disc_num)
         disc_num += 1
 
-def add_albums_to_db(con):
-    for folder in os.listdir(TAGS_FOLDER):
-        add_album_to_db(con, os.path.join(TAGS_FOLDER, folder))
+def add_albums_to_db(con, base_folder):
+    for folder in os.listdir(base_folder):
+        subfiles = os.listdir(os.path.join(base_folder, folder))
+        dir_found = False
+        for subfile in subfiles:
+            # print(subfile)
+            if os.path.isdir(os.path.join(base_folder, folder, subfile)):
+                dir_found = True
+        add_album_to_db(con, os.path.join(base_folder, folder))
+        if dir_found:
+            add_albums_to_db(con, os.path.join(base_folder, folder))
 
 def main():
-    os.remove(os.path.join(YALMP_FOLDER, "yalmp.db"))
+    if (os.path.exists(os.path.join(YALMP_FOLDER, "yalmp.db"))):
+        os.remove(os.path.join(YALMP_FOLDER, "yalmp.db"))
     con = sqlite3.connect(os.path.join(YALMP_FOLDER, "yalmp.db"))
     create_album_table(con)
     create_disc_table(con)
     create_track_table(con)
-    add_albums_to_db(con)
+    add_albums_to_db(con, TAGS_FOLDER)
 
 
 

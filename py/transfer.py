@@ -20,43 +20,48 @@ class AlbumInfo:
     file_name: str
 
 
-def tag_folder(music_folder, tag_folder, lyric_folder):
+def tag_a_folder(music_folder, tag_folder, lyric_folder):
     # print(music_folder," | " , tag_folder)
     music_files = os.listdir(music_folder)
     os.mkdir(tag_folder)
     os.mkdir(lyric_folder)
     all_info = []
     for file in music_files:
-        info = tag_file(
-            os.path.join(music_folder, file),
-            os.path.join(tag_folder, "".join(file.split(".")[0:-1]) + ".json"),
-            os.path.join(lyric_folder, "".join(file.split(".")[0:-1]) + ".txt"),
-            tag_folder,
-            file,
-        )
-        all_info.append(info)
+        if os.path.isdir(os.path.join(music_folder, file)):
+            tag_a_folder(os.path.join(music_folder, file), os.path.join(tag_folder, file), os.path.join(lyric_folder, file))
+        else:
+            info = tag_file(
+                os.path.join(music_folder, file),
+                os.path.join(tag_folder, "".join(file.split(".")[0:-1]) + ".json"),
+                os.path.join(lyric_folder, "".join(file.split(".")[0:-1]) + ".txt"),
+                tag_folder,
+                file,
+            )
+            if info is not None:
+                all_info.append(info)
 
-    all_info.sort()
+    if all_info:
+        all_info.sort()
+        create_multi_disc_album(all_info, tag_folder, "album.json")
 
-    create_multi_disc_album(all_info, tag_folder, "album.json")
 
-
-def create_single_disc_album(
-    all_info: list[AlbumInfo], tag_folder: str, json_name: str
-):
-    tag_to_write = {}
-    tag_to_write["AlbumName"] = all_info[0].album
-    tag_to_write["AlbumArtist"] = all_info[0].album_artist
-    tracks = []
-    for track in all_info:
-        tracks.append(track.file_name)
-    tag_to_write["Tracks"] = tracks
-    with open(os.path.join(tag_folder, json_name), "w") as f:
-        json.dump(tag_to_write, f, indent=4)
+# def create_single_disc_album(
+#     all_info: list[AlbumInfo], tag_folder: str, json_name: str
+# ):
+#     tag_to_write = {}
+#     tag_to_write["AlbumName"] = all_info[0].album
+#     tag_to_write["AlbumArtist"] = all_info[0].album_artist
+#     tracks = []
+#     for track in all_info:
+#         tracks.append(track.file_name)
+#     tag_to_write["Tracks"] = tracks
+#     with open(os.path.join(tag_folder, json_name), "w") as f:
+#         json.dump(tag_to_write, f, indent=4)
 
 
 def create_multi_disc_album(all_info: list[AlbumInfo], tag_folder: str, json_name: str):
     tag_to_write = {}
+    print(tag_folder, json_name)
     tag_to_write["AlbumName"] = all_info[0].album
     tag_to_write["AlbumArtist"] = all_info[0].album_artist
     discs = []
@@ -105,6 +110,10 @@ def tag_file(
 ) -> AlbumInfo:
     tag = {}
     file_tags = {}
+    print(file_name)
+    file_name_split = file_name.split(".")
+    if file_name_split[-1] == "png" or file_name_split[-1] == "jpg" or file_name_split[-1] == "txt":
+        return
     with taglib.File(music_file) as song:
         file_tags = song.tags
     print(music_file, file_tags)
@@ -159,7 +168,7 @@ def main():
         # print(folder)
         if folder == ".YALMP":
             continue
-        tag_folder(
+        tag_a_folder(
             os.path.join(MUSIC_FOLDER, folder),
             os.path.join(TAG_FOLDER, folder),
             os.path.join(LYRIC_FOLDER, folder),
