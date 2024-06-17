@@ -1,75 +1,65 @@
-# Tagging Spec
+#Tagging Spec
 
-Tags in YALMP are not your traditional id3 or vorbis tags. Instead they are
-stored in JSON files. The default tag location starts in ```$HOME/Music/.YALMP/tags```
-tags should have the same layout as tha music itself.
+Tags in YALMP are not your traditional id3 or
+    vorbis tags.Instead they are stored in JSON files.The default tag location starts in ```$HOME / Music /
+                                                                                                        .YALMP /
+            tags``` tags should have the same layout as tha music itself.
 
-## Single Disc Album Spec
-These will be titled as ```album.json```
+            ##Single Disc Album Spec These will be titled as ```album.json```
 
-* AlbumName: str
-* AlbumArtist: str
-* Tracks: List[str]
-  * In order of track number
-  * Paths to the json of the tracks
+            * AlbumName : str * AlbumArtist : str * Tracks : List[str] * In order of track number *
+                                                             Paths to the json of the tracks
 
-### Optional Sections Single Disc
+                                                             ## #Optional Sections Single Disc
 
-* Album Art: str
-  * Path to the album art
-* Copyright: str
-* Comment: str
-* Years: List[int]
+                                                             *
+                                                             Album Art : str * Path to the album art *
+                                                                         Copyright : str * Comment : str *
+                                                                                                     Years
+    : List[int]
 
-## Multi Disc Album Spec
+      ##Multi Disc Album Spec
 
-* AlbumName: str
-* AlbumArtist: str
-* Discs: List[str]
-  * In order of disc number
-  * Paths to the json of the tracks
+      *
+      AlbumName : str * AlbumArtist : str * Discs : List[str] * In order of disc number *
+                                                    Paths to the json of the tracks
 
-### Optional Sections Multi Disc
+                                                    ## #Optional Sections Multi Disc
 
-* Album Art: str
-  * Path to the album art
-* Copyright: str
-* Comment: str
-* Years: List[int]
+                                                    *
+                                                    Album Art : str * Path to the album art * Copyright : str *
+                                                                                                          Comment
+    : str *
+      Years : List[int]
 
-## Disc Spec
+              ##Disc Spec
 
-These will be titled as ```disc{discnumber}.json```
+                  These will be titled as ```disc{discnumber}
+                                                                                                        .json```
 
-* Album: str
-  * Path to the json of the albums
-* Tracks: List[str]
-  * Paths to the json of the tracks
+      *
+      Album : str * Path to the json of the albums * Tracks : List[str] *
+                                                              Paths to the json of the tracks
 
-### Optional Disc Sections
+                                                              ## #Optional Disc Sections
 
-* Name: str
-* Art: str
-* Comment: str
+                                                              *
+                                                              Name : str * Art : str *
+                                                                                 Comment
+    : str
 
-## Track Spec
+      ##Track Spec
 
-* Title: str
-* Album: str
-  * Path back to the album
-* Disc: str
-  * Path back to the disc (used only if album is Multi Disc)
+      *
+      Title : str * Album : str * Path back to the album *
+                            Disc
+    : str *
+      Path back to the disc(used only if album is Multi Disc)
 
-### Optional Track Sections
+          ## #Optional Track Sections
 
-* Artist: List[str]
-  * If not present will assume album artist is artist
-* Composer: str
-* Rating: Number
-  * 1 - 10
-* LyricPathRaw: str
-  * A path to the lyrics in their origional Language
-* LyricPathTransliterated: str
-  * A path to the lyrics transliterated
-* LyricPathTranslated: str
-  * A path to the lyrics translated
+      *
+      Artist : List[str] * If not present will assume album artist is artist * Composer : str * Rating : Number * 1 -
+        10 * LyricPathRaw : str * A path to the lyrics in their origional Language *
+                            LyricPathTransliterated : str * A path to the lyrics transliterated *
+                                                      LyricPathTranslated : str * A path to the lyrics translated

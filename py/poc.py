@@ -13,7 +13,7 @@ def create_album_table(con):
                 AlbumId integer PRIMARY KEY, 
                 Title varchar(256), 
                 AlbumArtist varchar(256)
-                );""")
+                )""")
     
 def create_disc_table(con):
     cur = con.cursor()
