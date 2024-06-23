@@ -1,17 +1,18 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QSqlQuery>
-#include <QStandardPaths>
 #include <QtDebug>
 #include <QtLogging>
+#include <QSettings>
 
 static bool create_tables();
 static bool should_create_tables(QDir yalmpDirectory);
 
 bool createConnection()
 {
-    QString musicFolder = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
-    QString yalmpFolder = musicFolder + "/.YALMP";
+    QSettings settings;
+
+    QString yalmpFolder = settings.value("YALMPfolder").toString();
     QDir yalmpDirectory = QDir(yalmpFolder);
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(yalmpFolder + "/yalmp.db");
