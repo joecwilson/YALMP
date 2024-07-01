@@ -1,9 +1,9 @@
 #include <QDir>
 #include <QMessageBox>
+#include <QSettings>
 #include <QSqlQuery>
 #include <QtDebug>
 #include <QtLogging>
-#include <QSettings>
 
 static bool create_tables();
 static bool should_create_tables(QDir yalmpDirectory);
@@ -58,6 +58,7 @@ static bool create_tables()
 {
     bool success = true;
     QSqlQuery query;
+
     success = query.exec("CREATE TABLE Albums ("
                          "AlbumId INTEGER PRIMARY KEY,"
                          "Title VARCHAR(256),"
@@ -85,6 +86,7 @@ static bool create_tables()
                          "TrackNum INTEGER,"
                          "TrackTitle VARCHAR(256),"
                          "TrackArt VARCHAR(256),"
+                         "Artist VARCHAR(256),"
                          "Album INTEGER,"
                          "Disc INTEGER,"
                          "FOREIGN KEY(Album) REFERENCES Albums(AlbumId),"
