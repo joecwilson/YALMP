@@ -17,8 +17,11 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("YALMP");
     setDefaults();
     createConnection();
-    bool scanSucessfull = scan();
-    qDebug() << "The scan returned" << scanSucessfull;
+    bool shouldScan = false;
+    if (shouldScan) {
+        bool scanSuccessful = scan();
+        qDebug() << "The scan returned" << scanSuccessful;
+    }
     MainWindow w;
     w.show();
     return a.exec();

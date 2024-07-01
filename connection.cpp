@@ -27,7 +27,7 @@ bool createConnection()
     bool success = db.open();
     if (!success)
     {
-        qDebug() << "Opening Faoled";
+        qDebug() << "Opening Failed";
         return false;
     }
     if (createTables)
