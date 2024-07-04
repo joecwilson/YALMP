@@ -31,6 +31,7 @@ def create_track_table(con):
                 TrackId integer PRIMARY KEY,
                 Title varchar(256),
                 Artist varchar(256),
+                TrackPath varchar(256),
                 Album INTEGER,
                 Disc INTEGER,
                 TrackNum INTEGER,

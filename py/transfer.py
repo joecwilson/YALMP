@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import re
 import shutil
 import taglib
 import json
@@ -123,12 +124,14 @@ def tag_file(
         tag["Artist"] = "Unknown Artist"
     tag["Title"] = file_tags["TITLE"][0]
     tag["Album"] = os.path.join(tag_folder, "album.json")
+    tag["Path"] = music_file
     # tag["Album"] = file_tags[]
     disc_num = 1
     if "DISCNUMBER" in file_tags:
-        disc_num = int(str(file_tags["DISCNUMBER"][0]).split("/")[0])
+        
+        disc_num = int(str(re.split(r"\/|-", file_tags["DISCNUMBER"][0])[0]))
         tag["Disc"] = os.path.join(tag_folder, "disc" + str(disc_num) + ".json")
-    track_num = int(str(file_tags["TRACKNUMBER"][0]).split("/")[0])
+    track_num = int(str(re.split(r"\/|-", file_tags["TRACKNUMBER"][0])[0]))
     # print(tag, track_num)
 
     if "LYRICS" in file_tags:

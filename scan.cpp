@@ -132,12 +132,13 @@ bool scanTrack(QSqlDatabase db, QString track, int albumId, int discId, int trac
     QJsonObject trackObject = trackJson.object();
     QString title = trackObject["Title"].toString();
     QString artist = trackObject["Artist"].toString();
-
-    QSqlQuery query("INSERT into Tracks (TrackNum, TrackTitle,Artist, Album, Disc ) VALUES (?,?,?,?,?)");
+    QString trackPath = trackObject["Path"].toString();
+    QSqlQuery query("INSERT into Tracks (TrackNum, TrackTitle, Artist, TrackPath, Album, Disc ) VALUES (?,?,?,?,?,?)");
 
     query.addBindValue(trackNum);
     query.addBindValue(title);
     query.addBindValue(artist);
+    query.addBindValue(trackPath);
     query.addBindValue(albumId);
     query.addBindValue(discId);
 

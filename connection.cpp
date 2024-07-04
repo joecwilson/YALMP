@@ -87,6 +87,7 @@ static bool create_tables()
                          "TrackTitle VARCHAR(256),"
                          "TrackArt VARCHAR(256),"
                          "Artist VARCHAR(256),"
+                         "TrackPath VARCHAR(256),"
                          "Album INTEGER,"
                          "Disc INTEGER,"
                          "FOREIGN KEY(Album) REFERENCES Albums(AlbumId),"
