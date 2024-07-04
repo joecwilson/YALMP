@@ -18,6 +18,11 @@ class MainWindow : public QMainWindow
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
+  public slots:
+    void removeItem(const QString &text);
+
+
   private:
     Ui::MainWindow *ui;
 };
