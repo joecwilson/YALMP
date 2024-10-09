@@ -1,16 +1,19 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "track.h"
 #include <QAudioOutput>
 #include <QMediaPlayer>
-#include "track.h"
+#include "albumlayout.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    for (int i = 0; i < 5; i++) {
-        QListWidgetItem* item = new QListWidgetItem();
-        Track* track = new Track(this);
+
+    for (int i = 0; i < 5; i++)
+    {
+        QListWidgetItem *item = new QListWidgetItem();
+        Track *track = new Track(this);
         track->setText(QString("Text %1").arg(i));
         item->setSizeHint(track->sizeHint());
 
@@ -18,8 +21,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         ui->listWidget->setItemWidget(item, track);
     }
 
+    // ui->gridLayout.
+    // ui->gridLayout = new AlbumLayout(this, 5);
+    AlbumLayout albumLayout = new AlbumLayout(this, 5);
 
+    for (int i = 0; i < 10; i++)
+    {
 
+    }
 
 
     QMediaPlayer *player = new QMediaPlayer;
@@ -31,11 +40,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     // player->play();
 }
 
-void MainWindow::removeItem(const QString &text) {
-    for (int i = 0; i < ui->listWidget->count(); i++) {
-        QListWidgetItem* item = ui->listWidget->item(i);
-        Track* track = dynamic_cast<Track*>(ui->listWidget->itemWidget(item));
-        if (track->getText() == text) {
+void MainWindow::removeItem(const QString &text)
+{
+    for (int i = 0; i < ui->listWidget->count(); i++)
+    {
+        QListWidgetItem *item = ui->listWidget->item(i);
+        Track *track = dynamic_cast<Track *>(ui->listWidget->itemWidget(item));
+        if (track->getText() == text)
+        {
             delete ui->listWidget->takeItem(i);
             break;
         }

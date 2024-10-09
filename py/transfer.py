@@ -63,8 +63,8 @@ def tag_a_folder(music_folder, tag_folder, lyric_folder):
 def create_multi_disc_album(all_info: list[AlbumInfo], tag_folder: str, json_name: str):
     tag_to_write = {}
     print(tag_folder, json_name)
-    tag_to_write["AlbumName"] = all_info[0].album
-    tag_to_write["AlbumArtist"] = all_info[0].album_artist
+    tag_to_write["name"] = all_info[0].album
+    tag_to_write["artist"] = all_info[0].album_artist
     discs = []
     cur_disc = 0
     idx = 0
@@ -81,7 +81,7 @@ def create_multi_disc_album(all_info: list[AlbumInfo], tag_folder: str, json_nam
                 os.path.join(tag_folder, json_name),
             )
         idx += 1
-    tag_to_write["Discs"] = discs
+    tag_to_write["discs"] = discs
     with open(os.path.join(tag_folder, json_name), "w") as f:
         json.dump(tag_to_write, f, indent=4)
 
@@ -94,14 +94,14 @@ def create_disc(
     album_path: str,
 ):
     tag_to_write = {}
-    tag_to_write["Album"] = album_path
+    tag_to_write["album"] = album_path
     tracks = []
     disc_num = all_info[start_idx].disc_num
     for track in all_info[start_idx:]:
         if track.disc_num != disc_num:
             break
         tracks.append(track.file_name)
-    tag_to_write["Tracks"] = tracks
+    tag_to_write["tracks"] = tracks
     with open(os.path.join(tag_folder, json_name), "w") as f:
         json.dump(tag_to_write, f, indent=4)
 
@@ -117,27 +117,27 @@ def tag_file(
         return
     with taglib.File(music_file) as song:
         file_tags = song.tags
-    print(music_file, file_tags)
+    # print(music_file, file_tags)
     if ("Artist" in file_tags):
-        tag["Artist"] = file_tags["ARTIST"]
+        tag["artist"] = file_tags["ARTIST"][0]
     else:
-        tag["Artist"] = "Unknown Artist"
-    tag["Title"] = file_tags["TITLE"][0]
-    tag["Album"] = os.path.join(tag_folder, "album.json")
-    tag["Path"] = music_file
+        tag["artist"] = "Unknown Artist"
+    tag["title"] = file_tags["TITLE"][0]
+    tag["album"] = os.path.join(tag_folder, "album.json")
+    tag["path"] = music_file
     # tag["Album"] = file_tags[]
     disc_num = 1
     if "DISCNUMBER" in file_tags:
         
         disc_num = int(str(re.split(r"\/|-", file_tags["DISCNUMBER"][0])[0]))
-        tag["Disc"] = os.path.join(tag_folder, "disc" + str(disc_num) + ".json")
+    tag["disc"] = os.path.join(tag_folder, "disc" + str(disc_num) + ".json")
     track_num = int(str(re.split(r"\/|-", file_tags["TRACKNUMBER"][0])[0]))
     # print(tag, track_num)
 
     if "LYRICS" in file_tags:
         with open(lyric_file, "w") as f_lrc:
             f_lrc.write(file_tags["LYRICS"][0])
-        tag["LyricPathRaw"] = lyric_file
+        tag["lyric_path_raw"] = lyric_file
 
     with open(tag_file, "w") as f_tag:
         # print(song.tags)\
@@ -181,7 +181,7 @@ def main():
     #     os.path.join(TAG_FOLDER, "Factorio"),
     #     os.path.join(LYRIC_FOLDER, "Factorio"),
     # )
-    # tag_folder(
+    # tag_a_folder(
     #     os.path.join(MUSIC_FOLDER, "Anno 2070"),
     #     os.path.join(TAG_FOLDER, "Anno 2070"),
     #     os.path.join(LYRIC_FOLDER, "Anno 2070"),

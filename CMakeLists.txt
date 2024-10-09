@@ -29,6 +29,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         scan.cpp
         scan.h
         track.h track.cpp track.ui
+        album.h album.cpp album.ui
+        albummodel.h albummodel.cpp
+        albumlayout.h albumlayout.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET YALMP APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

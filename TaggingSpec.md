@@ -22,22 +22,6 @@ These will be titled as ```album.json```
 * Comment: str
 * Years: List[int]
 
-## Multi Disc Album Spec
-
-* AlbumName: str
-* AlbumArtist: str
-* Discs: List[str]
-  * In order of disc number
-  * Paths to the json of the tracks
-
-### Optional Sections Multi Disc
-
-* Album Art: str
-  * Path to the album art
-* Copyright: str
-* Comment: str
-* Years: List[int]
-
 ## Disc Spec
 
 These will be titled as ```disc{discnumber}.json```
@@ -60,6 +44,8 @@ These will be titled as ```disc{discnumber}.json```
   * Path back to the album
 * Disc: str
   * Path back to the disc (used only if album is Multi Disc)
+* Path: str
+  * Path to the track itself
 
 ### Optional Track Sections
 

@@ -18,7 +18,8 @@ int main(int argc, char *argv[])
     setDefaults();
     createConnection();
     bool shouldScan = false;
-    if (shouldScan) {
+    if (shouldScan)
+    {
         bool scanSuccessful = scan();
         qDebug() << "The scan returned" << scanSuccessful;
     }
