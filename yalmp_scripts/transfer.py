@@ -11,6 +11,7 @@ MUSIC_FOLDER = os.path.join(os.path.expanduser("~"), "Music")
 YALMP_FOLDER = os.path.join(MUSIC_FOLDER, ".YALMP")
 TAG_FOLDER = os.path.join(YALMP_FOLDER, "tags")
 LYRIC_FOLDER = os.path.join(YALMP_FOLDER, "lyrics")
+RATINGS_ATTRIBUTE = "user.baloo.rating"
 
 
 @dataclass(order=True)
@@ -49,20 +50,6 @@ def tag_a_folder(music_folder, tag_folder, lyric_folder):
     if all_info:
         all_info.sort()
         create_multi_disc_album(all_info, tag_folder, "album.json")
-
-
-# def create_single_disc_album(
-#     all_info: list[AlbumInfo], tag_folder: str, json_name: str
-# ):
-#     tag_to_write = {}
-#     tag_to_write["AlbumName"] = all_info[0].album
-#     tag_to_write["AlbumArtist"] = all_info[0].album_artist
-#     tracks = []
-#     for track in all_info:
-#         tracks.append(track.file_name)
-#     tag_to_write["Tracks"] = tracks
-#     with open(os.path.join(tag_folder, json_name), "w") as f:
-#         json.dump(tag_to_write, f, indent=4)
 
 
 def create_multi_disc_album(all_info: list[AlbumInfo], tag_folder: str, json_name: str):
@@ -126,7 +113,6 @@ def tag_file(
         return
     with taglib.File(music_file) as song:
         file_tags = song.tags
-    # print(music_file, file_tags)
     if "Artist" in file_tags:
         tag["artist"] = file_tags["ARTIST"][0]
     else:
@@ -134,13 +120,18 @@ def tag_file(
     tag["title"] = file_tags["TITLE"][0]
     tag["album"] = os.path.join(tag_folder, "album.json")
     tag["path"] = music_file
-    # tag["Album"] = file_tags[]
     disc_num = 1
     if "DISCNUMBER" in file_tags:
         disc_num = int(str(re.split(r"\/|-", file_tags["DISCNUMBER"][0])[0]))
     tag["disc"] = os.path.join(tag_folder, "disc" + str(disc_num) + ".json")
     track_num = int(str(re.split(r"\/|-", file_tags["TRACKNUMBER"][0])[0]))
-    # print(tag, track_num)
+    rating = None
+    try:
+        rating = int(os.getxattr(music_file, RATINGS_ATTRIBUTE))
+        tag["rating"] = rating
+    except OSError:
+        pass
+
 
     if "LYRICS" in file_tags:
         with open(lyric_file, "w") as f_lrc:
@@ -164,36 +155,23 @@ def tag_file(
 
 
 def main():
-    # print(MUSIC_FOLDER)
-    # print(TAG_FOLDER)
     tag_path = Path(TAG_FOLDER)
     lyric_path = Path(LYRIC_FOLDER)
-    shutil.rmtree(YALMP_FOLDER)
-    # shutil.rmtree(TAG_FOLDER)
-    # shutil.rmtree(LYRIC_FOLDER)
+    if os.path.exists(YALMP_FOLDER):
+        shutil.rmtree(YALMP_FOLDER)
     tag_path.mkdir(parents=True, exist_ok=False)
     lyric_path.mkdir(parents=True, exist_ok=False)
     music = os.listdir(MUSIC_FOLDER)
-    print(music)
     for folder in music:
         print(folder)
         if folder == ".YALMP":
             continue
-    #     tag_a_folder(
-    #         os.path.join(MUSIC_FOLDER, folder),
-    #         os.path.join(TAG_FOLDER, folder),
-    #         os.path.join(LYRIC_FOLDER, folder),
-    #     )
-    # tag_folder(
-    #     os.path.join(MUSIC_FOLDER, "Factorio"),
-    #     os.path.join(TAG_FOLDER, "Factorio"),
-    #     os.path.join(LYRIC_FOLDER, "Factorio"),
-    # )
-    # tag_a_folder(
-    #     os.path.join(MUSIC_FOLDER, "Anno 2070"),
-    #     os.path.join(TAG_FOLDER, "Anno 2070"),
-    #     os.path.join(LYRIC_FOLDER, "Anno 2070"),
-    # )
+        tag_a_folder(
+            os.path.join(MUSIC_FOLDER, folder),
+            os.path.join(TAG_FOLDER, folder),
+            os.path.join(LYRIC_FOLDER, folder),
+        )
+
 
 
 if __name__ == "__main__":

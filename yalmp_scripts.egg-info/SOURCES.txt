@@ -4,5 +4,6 @@ yalmp_scripts/transfer.py
 yalmp_scripts.egg-info/PKG-INFO
 yalmp_scripts.egg-info/SOURCES.txt
 yalmp_scripts.egg-info/dependency_links.txt
+yalmp_scripts.egg-info/entry_points.txt
 yalmp_scripts.egg-info/requires.txt
 yalmp_scripts.egg-info/top_level.txt
