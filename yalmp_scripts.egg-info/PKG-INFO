@@ -1,7 +1,0 @@
-Metadata-Version: 2.1
-Name: yalmp_scripts
-Version: 0.1.0
-Requires-Dist: pytaglib
-Provides-Extra: dev
-Requires-Dist: ruff; extra == "dev"
-Requires-Dist: mypy; extra == "dev"
