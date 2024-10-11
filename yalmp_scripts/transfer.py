@@ -24,7 +24,6 @@ class AlbumInfo:
 
 
 def tag_a_folder(music_folder, tag_folder, lyric_folder):
-    # print(music_folder," | " , tag_folder)
     music_files = os.listdir(music_folder)
     os.mkdir(tag_folder)
     os.mkdir(lyric_folder)
@@ -132,14 +131,12 @@ def tag_file(
     except OSError:
         pass
 
-
     if "LYRICS" in file_tags:
         with open(lyric_file, "w") as f_lrc:
             f_lrc.write(file_tags["LYRICS"][0])
         tag["lyric_path_raw"] = lyric_file
 
     with open(tag_file, "w") as f_tag:
-        # print(song.tags)\
         json.dump(tag, f_tag, indent=4)
     album_artist = "Unknown Artist"
     if "ALBUMARTIST" in file_tags:
@@ -171,7 +168,6 @@ def main():
             os.path.join(TAG_FOLDER, folder),
             os.path.join(LYRIC_FOLDER, folder),
         )
-
 
 
 if __name__ == "__main__":
