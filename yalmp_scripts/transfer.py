@@ -1,10 +1,11 @@
+import json
 import os
-from pathlib import Path
 import re
 import shutil
-import taglib
-import json
 from dataclasses import dataclass
+from pathlib import Path
+
+import taglib
 
 MUSIC_FOLDER = os.path.join(os.path.expanduser("~"), "Music")
 YALMP_FOLDER = os.path.join(MUSIC_FOLDER, ".YALMP")
@@ -29,7 +30,11 @@ def tag_a_folder(music_folder, tag_folder, lyric_folder):
     all_info = []
     for file in music_files:
         if os.path.isdir(os.path.join(music_folder, file)):
-            tag_a_folder(os.path.join(music_folder, file), os.path.join(tag_folder, file), os.path.join(lyric_folder, file))
+            tag_a_folder(
+                os.path.join(music_folder, file),
+                os.path.join(tag_folder, file),
+                os.path.join(lyric_folder, file),
+            )
         else:
             info = tag_file(
                 os.path.join(music_folder, file),
@@ -113,12 +118,16 @@ def tag_file(
     file_tags = {}
     print(file_name)
     file_name_split = file_name.split(".")
-    if file_name_split[-1] == "png" or file_name_split[-1] == "jpg" or file_name_split[-1] == "txt":
+    if (
+        file_name_split[-1] == "png"
+        or file_name_split[-1] == "jpg"
+        or file_name_split[-1] == "txt"
+    ):
         return
     with taglib.File(music_file) as song:
         file_tags = song.tags
     # print(music_file, file_tags)
-    if ("Artist" in file_tags):
+    if "Artist" in file_tags:
         tag["artist"] = file_tags["ARTIST"][0]
     else:
         tag["artist"] = "Unknown Artist"
@@ -128,7 +137,6 @@ def tag_file(
     # tag["Album"] = file_tags[]
     disc_num = 1
     if "DISCNUMBER" in file_tags:
-        
         disc_num = int(str(re.split(r"\/|-", file_tags["DISCNUMBER"][0])[0]))
     tag["disc"] = os.path.join(tag_folder, "disc" + str(disc_num) + ".json")
     track_num = int(str(re.split(r"\/|-", file_tags["TRACKNUMBER"][0])[0]))
@@ -143,7 +151,7 @@ def tag_file(
         # print(song.tags)\
         json.dump(tag, f_tag, indent=4)
     album_artist = "Unknown Artist"
-    if ("ALBUMARTIST" in file_tags):
+    if "ALBUMARTIST" in file_tags:
         album_artist = file_tags["ALBUMARTIST"][0]
     info = AlbumInfo(
         track_num=track_num,
@@ -166,16 +174,16 @@ def main():
     tag_path.mkdir(parents=True, exist_ok=False)
     lyric_path.mkdir(parents=True, exist_ok=False)
     music = os.listdir(MUSIC_FOLDER)
-    # print(music)
+    print(music)
     for folder in music:
-        # print(folder)
+        print(folder)
         if folder == ".YALMP":
             continue
-        tag_a_folder(
-            os.path.join(MUSIC_FOLDER, folder),
-            os.path.join(TAG_FOLDER, folder),
-            os.path.join(LYRIC_FOLDER, folder),
-        )
+    #     tag_a_folder(
+    #         os.path.join(MUSIC_FOLDER, folder),
+    #         os.path.join(TAG_FOLDER, folder),
+    #         os.path.join(LYRIC_FOLDER, folder),
+    #     )
     # tag_folder(
     #     os.path.join(MUSIC_FOLDER, "Factorio"),
     #     os.path.join(TAG_FOLDER, "Factorio"),

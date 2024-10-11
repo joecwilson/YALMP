@@ -1,0 +1,6 @@
+pytaglib
+
+[dev]
+black
+ruff
+mypy
