@@ -1,23 +1,11 @@
 import json
 import os
 
-from yalmp_scripts.constants import RATINGS_ATTRIBUTE, TAG_FOLDER
+from yalmp_scripts.constants import RATINGS_ATTRIBUTE
+from yalmp_scripts.utils import get_albums
 
 
-def tag_a_folder(tag_folder):
-    tag_files = os.listdir(tag_folder)
-    for file in tag_files:
-        if os.path.isdir(os.path.join(tag_folder, file)):
-            tag_a_folder(
-                os.path.join(tag_folder, file),
-            )
-        elif file == "album.json":
-            fix_album(
-                os.path.join(tag_folder, file),
-            )
-
-
-def fix_album(full_path):
+def fix_album(full_path: str):
     with open(full_path) as f:
         data = json.load(f)
         discs = data["discs"]
@@ -25,7 +13,7 @@ def fix_album(full_path):
             fix_discs(disc)
 
 
-def fix_discs(disc_path):
+def fix_discs(disc_path: str):
     with open(disc_path) as f:
         disc = json.load(f)
         tracks = disc["tracks"]
@@ -36,7 +24,7 @@ def fix_discs(disc_path):
                 print(f"{track} in {disc_path} not found!")
 
 
-def fix_track(track_path):
+def fix_track(track_path: str):
     with open(track_path) as f:
         track = json.load(f)
         music_path = track["path"]
@@ -48,7 +36,9 @@ def fix_track(track_path):
 
 
 def main():
-    tag_a_folder(TAG_FOLDER)
+    albums = get_albums()
+    for album in albums:
+        fix_album(album)
 
 
 if __name__ == "__main__":

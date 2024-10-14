@@ -4,7 +4,7 @@ import os
 from yalmp_scripts.constants import TAG_FOLDER, YALMP_FOLDER
 
 
-def get_an_album(tag_folder):
+def get_an_album(tag_folder: str):
     tag_files = os.listdir(tag_folder)
     album_paths = []
     for file in tag_files:
