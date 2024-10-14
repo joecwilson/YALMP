@@ -16,3 +16,4 @@ dev = ["ruff", "mypy"]
 generate-folder = "yalmp_scripts.transfer:main"
 fix-ratings = "yalmp_scripts.fix_ratings:main"
 generate-album-list = "yalmp_scripts.get_albums:main"
+generated-unrated-song-playlist = "yalmp_scripts.get_unrated:main"
