@@ -13,7 +13,6 @@ def main():
             track_dict = json.load(f)
             if "rating" not in track_dict:
                 unrated_tracks.append(track_dict["path"] + "\n")
-    print(unrated_tracks)
     with open(os.path.join(MUSIC_FOLDER, "unratedsongs.m3u8"), "w") as f:
         for track in unrated_tracks:
             f.write(track)

@@ -26,6 +26,8 @@ class AlbumInfo:
 
 
 def tag_a_folder(music_folder, tag_folder, lyric_folder):
+    if ".git" in music_folder or ".m3u8" in music_folder:
+        return
     music_files = os.listdir(music_folder)
     os.mkdir(tag_folder)
     os.mkdir(lyric_folder)
@@ -156,10 +158,8 @@ def tag_file(
 def main():
     tag_path = Path(TAG_FOLDER)
     lyric_path = Path(LYRIC_FOLDER)
-    if os.path.exists(YALMP_FOLDER):
-        shutil.rmtree(YALMP_FOLDER)
-    tag_path.mkdir(parents=True, exist_ok=False)
-    lyric_path.mkdir(parents=True, exist_ok=False)
+    tag_path.mkdir(parents=True, exist_ok=True)
+    lyric_path.mkdir(parents=True, exist_ok=True)
     music = os.listdir(MUSIC_FOLDER)
     for folder in music:
         print(folder)
