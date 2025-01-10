@@ -1,7 +1,8 @@
 import json
 import os
 import re
-import shutil
+import librosa
+import math
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -123,6 +124,7 @@ def tag_file(
     tag["title"] = file_tags["TITLE"][0]
     tag["album"] = os.path.join(tag_folder, "album.json")
     tag["path"] = music_file
+    tag["duration"] = math.ceil(librosa.get_duration(path=music_file)*1000)
     disc_num = 1
     if "DISCNUMBER" in file_tags:
         disc_num = int(str(re.split(r"\/|-", file_tags["DISCNUMBER"][0])[0]))
